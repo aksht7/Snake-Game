@@ -1,5 +1,6 @@
 var canvas = document.getElementById('game');
 var context = canvas.getContext('2d');
+var score=document.getElementById('score');
 var grid = 16;
 var count = 0;
 var move;
@@ -64,6 +65,7 @@ function moveSnake( dx , dy)
       }
     if(snake.x==apple.x && snake.y==apple.y)
         {
+            refreshScore();
             snake.cells.unshift({x: snake.x , y: snake.y});
             var ran=Math.floor(Math.random()*(25-1)+1);
             apple.x=ran*16;
@@ -137,3 +139,7 @@ document.addEventListener('keydown', function(e)
   }
   
 });
+function refreshScore()
+{
+    score.innerHTML=Number(score.innerHTML)+5;
+}
