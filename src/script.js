@@ -9,7 +9,8 @@ var snake =
 {
   x : 160,
   y : 160 ,
- cells : [{x:160 , y:160} , {x:144 , y:160}] ,
+  cells : [{x:160 , y:160} , {x:144 , y:160}] ,
+  die:false,
 };
 
 var apple = {
@@ -47,22 +48,6 @@ function moveSnake( dx , dy)
 {
     snake.x += dx ;
     snake.y += dy ;
-    if(snake.x>=400)
-      {
-          snake.x=0;
-      }
-    else if(snake.x<=-16)
-      {
-          snake.x=384;
-      }
-    else if(snake.y>=400)
-      {
-          snake.y=0;
-      }
-    else if(snake.y<=-16)
-      {
-          snake.y=384;
-      }
     if(snake.x==apple.x && snake.y==apple.y)
         {
             refreshScore();
@@ -81,6 +66,25 @@ function moveSnake( dx , dy)
     drawSnake();
 }
 
+function checkBoundaries()
+{
+    if(snake.x<0 || snake.x>=canvas.width || snake.y<0 || snake.y>=canvas.height)
+        {
+            snake.die=true;
+        }
+}
+
+function checkIfSnakeBitesItself()
+{
+    console.log(snake.cells.length);
+    for(let i=4;i<snake.cells.length;i++)
+        {
+            if(snake.x==snake.cells[i].x && snake.y==snake.cells[i].y)
+                {
+                    snake.die=true;
+                }
+        }
+}
 // listen to keyboard events to move the snake
 document.addEventListener('keydown', function(e) 
 {
@@ -94,6 +98,14 @@ document.addEventListener('keydown', function(e)
             dy = 0;
             context.clearRect(0, 0, canvas.width,canvas.height);// Clear the Canvas
             moveSnake(dx,dy);
+            checkBoundaries();
+            checkIfSnakeBitesItself();
+            if(snake.die==true)
+                {
+                    clearInterval(move);
+                    gameOver();
+                }
+            else
             drawApple();
             lastMove='left';
         },100); 
@@ -107,6 +119,14 @@ document.addEventListener('keydown', function(e)
             dx = 0;
             context.clearRect(0, 0, canvas.width,canvas.height);// Clear the Canvas
             moveSnake(dx,dy);
+            checkBoundaries();
+            checkIfSnakeBitesItself();
+            if(snake.die==true)
+                {
+                    clearInterval(move);
+                    gameOver();
+                }
+            else
             drawApple();
             lastMove='up';
         },100);
@@ -120,6 +140,14 @@ document.addEventListener('keydown', function(e)
             dy = 0;
             context.clearRect(0, 0, canvas.width,canvas.height);// Clear the Canvas
             moveSnake(dx,dy);
+            checkBoundaries();
+            checkIfSnakeBitesItself();
+            if(snake.die==true)
+                {
+                    clearInterval(move);
+                    gameOver();
+                }
+            else
             drawApple();
             lastMove='right';
         },100);
@@ -133,6 +161,14 @@ document.addEventListener('keydown', function(e)
             dx = 0;
             context.clearRect(0, 0, canvas.width,canvas.height);// Clear the Canvas
             moveSnake(dx,dy);
+            checkBoundaries();
+            checkIfSnakeBitesItself();
+            if(snake.die==true)
+                {
+                    clearInterval(move);
+                    gameOver();
+                }
+            else
             drawApple();
             lastMove='down';
         },100);
@@ -142,4 +178,12 @@ document.addEventListener('keydown', function(e)
 function refreshScore()
 {
     score.innerHTML=Number(score.innerHTML)+5;
+}
+
+function gameOver(){
+    context.clearRect(0,0,400,400);
+    snake.cells=[];
+    context.fillStyle="cyan";
+    context.textAlign="center";
+    context.fillText("Game Over!!!",canvas.width/2,canvas.height/2);
 }
