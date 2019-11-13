@@ -144,7 +144,7 @@ var canvas = document.getElementById('game');
             context.clearRect(0, 0, canvas.width,canvas.height);// Clear the Canvas
             snake.cells = [];
 			apple = {x:-100,y:-20};
-            context.fillStyle = 'red'; 
+            context.fillStyle = 'cyan'; 
             context.font = "30px Arial";
             context.textAlign = "center";
             context.fillText("Game Over" , canvas.width/2, canvas.height/2);
